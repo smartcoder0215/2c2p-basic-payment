@@ -11,7 +11,8 @@ const PaymentForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || ''}/api/create-payment`.replace(/\/+/g, '/'), {
+      const API_URL = process.env.REACT_APP_API_URL || 'https://2c2p-backend-production.up.railway.app';
+      const response = await fetch(`${API_URL}/api/create-payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
