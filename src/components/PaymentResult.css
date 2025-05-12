@@ -1,0 +1,77 @@
+.payment-result {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.payment-result.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.payment-result.success {
+  background-color: #f0fff4;
+  border: 1px solid #68d391;
+}
+
+.payment-result.error {
+  background-color: #fff5f5;
+  border: 1px solid #fc8181;
+}
+
+.payment-result h2 {
+  margin-bottom: 1.5rem;
+  color: #2d3748;
+}
+
+.result-details {
+  margin-bottom: 2rem;
+}
+
+.result-details p {
+  margin: 0.5rem 0;
+  color: #4a5568;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.action-buttons button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-buttons button:first-child {
+  background-color: #4a5568;
+  color: white;
+}
+
+.action-buttons button:first-child:hover {
+  background-color: #2d3748;
+}
+
+.retry-button {
+  background-color: #4299e1 !important;
+  color: white !important;
+}
+
+.retry-button:hover {
+  background-color: #3182ce !important;
+}
+
+.loading {
+  text-align: center;
+  color: #4a5568;
+  font-size: 1.2rem;
+} 
