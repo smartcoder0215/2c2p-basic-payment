@@ -10,51 +10,33 @@ const PaymentResult = () => {
 
   useEffect(() => {
     const handlePaymentResult = async () => {
+      setLoading(true);
       try {
-        // Get parameters from URL
-        const params = new URLSearchParams(location.search);
-        const invoiceNo = params.get('invoiceNo');
-        const amount = params.get('amount');
-        const currencyCode = params.get('currencyCode');
-        const respCode = params.get('respCode');
-        const respDesc = params.get('respDesc');
-        const errorDetails = params.get('errorDetails');
-        const isSuccess = params.get('isSuccess') === 'true';
-
-        console.log('Payment Result Parameters:', {
-          invoiceNo,
-          amount,
-          currencyCode,
-          respCode,
-          respDesc,
-          errorDetails,
-          isSuccess
-        });
-
-        // If we have a response code, it's a direct redirect
-        if (respCode) {
+        // Always get invoiceNo from localStorage
+        const invoiceNo = localStorage.getItem('lastInvoiceNo');
+        if (!invoiceNo) {
           setResult({
-            invoiceNo: invoiceNo || 'Not available',
-            amount: amount || '0',
-            currencyCode: currencyCode || 'THB',
-            respCode,
-            respDesc: respDesc || 'No description available',
-            errorDetails,
-            isSuccess
+            respCode: '9999',
+            respDesc: 'No invoice number found',
+            isSuccess: false
           });
-        } else {
-          // If no direct response, try to get payment details from backend
-          const response = await fetch(`http://localhost:5000/api/payment-inquiry`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ invoiceNo })
-          });
-
-          const data = await response.json();
-          setResult(data);
+          return;
         }
+        // Perform payment inquiry
+        const response = await fetch(`http://localhost:5000/api/payment-inquiry`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ invoiceNo })
+        });
+        const data = await response.json();
+        setResult({
+          ...data,
+          isSuccess: data.respCode === '0000'
+        });
+        // Optionally clear the invoice number after use
+        localStorage.removeItem('lastInvoiceNo');
       } catch (error) {
         console.error('Error processing payment result:', error);
         setResult({
@@ -67,9 +49,8 @@ const PaymentResult = () => {
         setLoading(false);
       }
     };
-
     handlePaymentResult();
-  }, [location]);
+  }, []);
 
   const handleBackToHome = () => {
     navigate('/');

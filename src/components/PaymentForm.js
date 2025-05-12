@@ -25,6 +25,10 @@ const PaymentForm = () => {
       const data = await response.json();
       
       if (data.paymentUrl) {
+        // Store invoiceNo in localStorage
+        if (data.invoiceNo) {
+          localStorage.setItem('lastInvoiceNo', data.invoiceNo);
+        }
         // Redirect to 2C2P payment page
         window.location.href = data.paymentUrl;
       } else {
@@ -62,8 +66,8 @@ const PaymentForm = () => {
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
           >
-            <option value="THB">THB</option>
-            <option value="USD">USD</option>
+            {/* <option value="THB">THB</option>
+            <option value="USD">USD</option> */}
             <option value="SGD">SGD</option>
           </select>
         </div>
