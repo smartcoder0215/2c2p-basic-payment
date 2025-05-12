@@ -3,7 +3,7 @@ import './PaymentForm.css';
 
 const PaymentForm = () => {
   const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState('THB');
+  const [currency, setCurrency] = useState('SGD');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -66,8 +66,6 @@ const PaymentForm = () => {
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
           >
-            {/* <option value="THB">THB</option>
-            <option value="USD">USD</option> */}
             <option value="SGD">SGD</option>
           </select>
         </div>
