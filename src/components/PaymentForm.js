@@ -11,16 +11,28 @@ const PaymentForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || ''}/api/create-payment`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || ''}/api/create-payment`.replace(/\/+/g, '/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Origin': window.location.origin
         },
+        mode: 'cors',
+        credentials: 'include',
         body: JSON.stringify({
           amount: parseFloat(amount),
           currency,
         }),
       });
+
+      if (!response.ok) {
+        if (response.status === 502) {
+          throw new Error('Payment service is temporarily unavailable. Please try again later.');
+        }
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.details || `Payment failed with status: ${response.status}`);
+      }
 
       const data = await response.json();
       
